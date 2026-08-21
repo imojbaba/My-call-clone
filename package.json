@@ -1,0 +1,23 @@
+{
+  "name": "my-call-clone",
+  "version": "0.1.0",
+  "description": "Your own phone-callable voice bot: a Twilio phone number bridged to xAI's Grok speech-to-speech (Voice Agent) API",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "call": "node src/outbound-call.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/websocket": "^11.2.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^5.0.0",
+    "ws": "^8.18.0"
+  },
+  "license": "MIT"
+}
