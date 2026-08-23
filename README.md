@@ -1,18 +1,43 @@
 # My Call Clone — your own phone-callable Grok voice bot
 
-Yes, what you saw in that video is real. **xAI (X)** launched:
+Yes, what you saw in that video is real, and it is all **X (xAI)** — no third-party telephony,
+no test numbers. xAI launched:
 
 1. **Grok Voice Agent API** — a real-time **speech-to-speech** model (`grok-voice-latest`,
    currently `grok-voice-think-fast-1.0`). One model listens and talks directly — no separate
    speech-to-text → LLM → text-to-speech chain — over a WebSocket that is compatible with the
    OpenAI Realtime API spec. Docs: https://docs.x.ai/developers/model-capabilities/audio/voice-agent
-2. **Voice Agent Builder** (July 1, 2026, beta) — a no-code service at xAI where you configure a
-   voice bot with a prompt, pick a voice, and **they give you a free phone number** people can
-   call. Audio is priced from **$0.05/minute**. Announcement: https://x.ai/news/grok-voice-agent-builder
+2. **Voice Agent Builder** (https://x.ai/voice, launched July 1, 2026) — a no-code service where
+   you configure a voice bot with a prompt, pick a voice, and xAI gives you a **free, real phone
+   number** on their own phone service. Announcement: https://x.ai/news/grok-voice-agent-builder
 
-This repo is the **do-it-yourself version of that service**: a small Node.js server that bridges
-a phone number (Twilio) to Grok's speech-to-speech model, so you fully own the code, the prompt,
-the tools, and the number.
+## The thing from the video — personal calling, X only, no code
+
+Everything runs on xAI's side; you never touch a server or a telecom provider:
+
+1. Sign in at the xAI console (https://console.x.ai) and open the **Voice Agent Builder**
+   (https://x.ai/voice).
+2. Create your agent: write its instructions/personality and pick a voice — eve, ara, rex, sal,
+   leo, or clone your own voice. xAI says an agent takes under 2 minutes to deploy, and you can
+   test it right in the browser first.
+3. Every account ships with a **free phone number** — a real, dialable number, not a trial/test
+   number. Attach it to your agent.
+4. Save that number in your contacts and call your bot whenever you like.
+
+**Cost:** the number itself is free; usage is ~**$0.05/min** of audio plus **$0.01/min** phone
+service on xAI numbers. Grok Voice speaks 25+ languages and handles noisy phone audio, accents,
+and interruptions.
+
+**Growing beyond the builder:** the same platform lets you bring an existing number via **SIP**,
+wire the agent to your own APIs and MCP servers as tools, or connect your own client over
+WebSocket — so a personal bot can graduate into one that actually does things for you.
+
+## This repo — the DIY version (optional, for owning the code)
+
+The rest of this repo is the **do-it-yourself version of that service**: a small Node.js server
+that bridges a phone number (via Twilio) to the same Grok speech-to-speech model. Use it only if
+you want to own the code end-to-end — custom call logic, your own tools, recordings, or numbers
+in countries xAI doesn't cover.
 
 ```
  Caller ── PSTN ──> Twilio number ── Media Streams (WebSocket, G.711 μ-law) ──> this server
@@ -24,21 +49,6 @@ the tools, and the number.
 
 Because Grok supports G.711 μ-law natively (the telephone codec Twilio uses), audio passes
 straight through in both directions with no transcoding — which is what keeps latency low.
-
----
-
-## Option A — no code at all (fastest)
-
-If you just want the thing from the video:
-
-1. Go to the xAI console (https://console.x.ai) → **Voice Agent Builder**.
-2. Write your agent's instructions, pick a voice (eve, ara, rex, sal, leo, or clone your own).
-3. Grab the **free phone number** included with the account and call it.
-
-Done — no servers, ~$0.05/min. Use this repo instead when you want your own logic, your own
-tools/APIs wired in, call recordings, or numbers in countries the builder doesn't cover.
-
-## Option B — this repo (your own stack)
 
 ### What you need
 
