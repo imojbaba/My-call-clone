@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#3d4a49">
+    <meta name="description" content="Unclench your shoulders. Leave the day at the door. A few quiet minutes, just for you">
+    <title>Soft Hours — A little more room</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d4a49'/%3E%3Cpath d='M6 16a10 10 0 0 1 20 0Z' fill='%23f4f1ea'/%3E%3Cpath d='M7 21h18M10 25h12' stroke='%23f4f1ea' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ink: #f4f1ea;
+        --ink-soft: rgba(244, 241, 234, 0.82);
+        --ink-dim: rgba(244, 241, 234, 0.7);
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { height: 100%; overflow: hidden; }
+      body {
+        margin: 0;
+        background: #3d4a49;
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+      h1, p { margin: 0; }
+      a { color: inherit; text-decoration: none; }
+      a:focus-visible { outline: 2px solid var(--ink); outline-offset: 7px; }
+
+      .bg-video {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+      .bg-tint {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(20, 30, 32, 0.14) 0%, rgba(20, 30, 32, 0) 22%);
+      }
+      .page {
+        position: relative;
+        z-index: 2;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        padding: 30px 42px 0;
+      }
+      .brand, .contact {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+      }
+      .brand { justify-self: start; }
+      .rule {
+        width: 1px;
+        height: 22px;
+        background: rgba(244, 241, 234, 0.55);
+      }
+      .wordmark {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1;
+        color: var(--ink);
+      }
+      .logo-mark { display: block; width: 28px; height: 28px; flex: none; }
+      .nav-links {
+        display: flex;
+        justify-self: center;
+        gap: 38px;
+      }
+      .nav-links a, .contact a {
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        color: var(--ink-dim);
+        transition: color 0.25s ease;
+      }
+      .nav-links a:hover, .contact a:hover { color: var(--ink); }
+      .contact { justify-self: end; }
+      .contact a { font-size: 16px; }
+
+      .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 24px;
+        margin-top: 11vh;
+      }
+      .headline-sans {
+        display: block;
+        font-weight: 300;
+        font-size: clamp(42px, 4.9vw, 74px);
+        line-height: 1.08;
+        letter-spacing: -0.01em;
+        color: var(--ink-soft);
+      }
+      .headline-serif {
+        display: block;
+        margin-top: 2px;
+        font-family: "Instrument Serif", serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(48px, 5.6vw, 86px);
+        line-height: 1.08;
+        letter-spacing: 0;
+        color: var(--ink);
+      }
+      .subheading {
+        margin-top: 26px;
+        max-width: 420px;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 1.45;
+        color: var(--ink-soft);
+      }
+      .cta {
+        margin-top: 34px;
+        display: inline-block;
+        font-size: 15px;
+        font-weight: 500;
+        color: #1f1f1f;
+        background: #fdfcfa;
+        padding: 15px 26px;
+        border-radius: 12px;
+        box-shadow: 0 0 0 4px rgba(253,252,250,0.28), 0 2px 10px rgba(20,30,32,0.18);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      .cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 5px rgba(253,252,250,0.34), 0 4px 14px rgba(20,30,32,0.22);
+      }
+
+      .foot {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 42px 26px;
+        pointer-events: none;
+      }
+      .foot p {
+        font-size: 13.5px;
+        font-weight: 300;
+        letter-spacing: 0.01em;
+        color: var(--ink-dim);
+      }
+
+      .lyric-field {
+        position: fixed;
+        inset: 0;
+        z-index: 3;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .lyric {
+        position: absolute;
+        width: max-content;
+        max-width: min(260px, calc(100vw - 48px));
+        font-family: "Instrument Serif", serif;
+        font-style: italic;
+        font-weight: 400;
+        font-size: clamp(24px, 2.1vw, 34px);
+        line-height: 1.2;
+        color: rgba(244, 241, 234, 0.78);
+        text-shadow: 0 2px 20px rgba(20, 30, 32, 0.2);
+        opacity: 0;
+        animation: lyric-life var(--life) linear both;
+      }
+      .lyric span {
+        display: inline-block;
+        animation: lyric-word 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: calc(var(--word) * 100ms);
+      }
+      @keyframes lyric-life {
+        0% { opacity: 0; transform: translateY(10px); }
+        18%, 74% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-7px); }
+      }
+      @keyframes lyric-word {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lyric-field { display: none; }
+        .cta { transition: none; }
+        .cta:hover { transform: none; }
+      }
+
+      @media (max-width: 720px) {
+        .nav { grid-template-columns: auto 1fr; padding: 22px 20px 0; }
+        .nav-links { display: none; }
+        .hero { margin-top: 14vh; }
+        .foot { padding: 0 20px 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="soft-hours-poster.jpg" aria-hidden="true">
+      <source src="soft-hours-loop.mp4" type="video/mp4">
+    </video>
+    <div class="bg-tint"></div>
+    <div class="page">
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand wordmark" href="#" aria-label="Soft Hours home">
+          <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M4 15a12 12 0 0 1 24 0Z" fill="currentColor"/>
+            <path d="M5 21h22M9 27h14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <span>soft hours</span>
+        </a>
+        <!-- Link destinations were not supplied; retain the one-screen reference. -->
+        <div class="nav-links">
+          <a href="#">Our way</a>
+          <a href="#">Practice</a>
+          <a href="#">Retreats</a>
+          <a href="#">Field notes</a>
+        </div>
+        <div class="contact">
+          <a href="#">Say hello</a>
+          <span class="rule" aria-hidden="true"></span>
+        </div>
+      </nav>
+      <main class="hero">
+        <h1>
+          <span class="headline-sans">A little less noise</span>
+          <span class="headline-serif">A little more room</span>
+        </h1>
+        <p class="subheading">Unclench your shoulders. Leave the day at the door. A few quiet minutes, just for you</p>
+        <a class="cta" href="#">Find a softer pace</a>
+      </main>
+      <footer class="foot">
+        <p>Take your time. The world can wait</p>
+      </footer>
+    </div>
+    <div class="lyric-field" aria-hidden="true"></div>
+    <script>
+      (() => {
+        const field = document.querySelector('.lyric-field');
+        const backgroundVideo = document.querySelector('.bg-video');
+        const cta = document.querySelector('.cta');
+        const footer = document.querySelector('.foot');
+        const nav = document.querySelector('.nav');
+        const protectedContent = [...document.querySelectorAll('.hero h1, .subheading, .cta')];
+        const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+        // Original lines, written for Soft Hours rather than quoted song lyrics.
+        const phrases = [
+          'leave a little day behind',
+          'the light takes its time',
+          'somewhere, the grass is listening',
+          'nothing here needs an answer',
+          'let the evening find you',
+          'stay until the sky goes quiet',
+          'a little less to carry',
+          'your thoughts can take the long way',
+          'the rest can wait',
+          'no hurry to become anything',
+          'bare feet, open windows',
+          'a sky with no plans',
+          'this is enough for now',
+          'follow the quieter thought',
+          'let the last note linger',
+          'all this room to feel',
+          'the afternoon comes undone',
+          'we could stay a little longer',
+          'wind through an open door',
+          'the day loosens its grip',
+          'some things arrive softly',
+          'a song with nowhere to be',
+          'leave the clock indoors',
+          'and let the world hum on'
+        ];
+        let bag = [];
+        let lastPhrase = '';
+        let nextSide = 'right';
+        let timer;
+        const random = (min, max) => min + Math.random() * (max - min);
+
+        function nextPhrase() {
+          if (!bag.length) {
+            bag = [...phrases];
+            for (let i = bag.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [bag[i], bag[j]] = [bag[j], bag[i]];
+            }
+            if (bag[bag.length - 1] === lastPhrase) [bag[0], bag[bag.length - 1]] = [bag[bag.length - 1], bag[0]];
+          }
+          lastPhrase = bag.pop();
+          return lastPhrase;
+        }
+
+        function placeLine(line, side) {
+          const mobile = innerWidth <= 720;
+          const padding = mobile ? 24 : 42;
+          const width = line.offsetWidth;
+          const height = line.offsetHeight;
+          const bottom = footer.getBoundingClientRect().top - 24 - height;
+          const halfGap = 18;
+          const fitsHalf = !mobile && width <= innerWidth / 2 - padding - halfGap;
+          // Desktop can use the open space beside the heading as well as the meadow.
+          // Small screens alternate alignment below the CTA, using the available width.
+          const top = fitsHalf ? nav.getBoundingClientRect().bottom + 30 : cta.getBoundingClientRect().bottom + 30;
+          const minX = fitsHalf && side === 'right' ? innerWidth / 2 + halfGap : padding;
+          const maxX = fitsHalf && side === 'left' ? innerWidth / 2 - halfGap - width : innerWidth - padding - width;
+          if (bottom < top || maxX < minX) return false;
+          const protectedRects = protectedContent.map(node => node.getBoundingClientRect());
+          const others = [...field.children].filter(node => node !== line).map(node => node.getBoundingClientRect());
+          const overlaps = (x, y, rect, gap) => x < rect.right + gap && x + width > rect.left - gap && y < rect.bottom + gap && y + height > rect.top - gap;
+          for (let attempt = 0; attempt < 60; attempt++) {
+            const x = fitsHalf ? random(minX, maxX) : side === 'right' ? maxX : minX;
+            const y = random(top, bottom);
+            if (protectedRects.some(rect => overlaps(x, y, rect, 32)) || others.some(rect => overlaps(x, y, rect, 28))) continue;
+            line.style.left = `${x}px`;
+            line.style.top = `${y}px`;
+            line.style.textAlign = side;
+            line.dataset.side = side;
+            return true;
+          }
+          return false;
+        }
+
+        function tick() {
+          if (document.hidden || reducedMotion.matches) return;
+          const limit = innerWidth <= 720 ? 2 : innerWidth < 1100 ? 4 : 5;
+          if (field.childElementCount < limit) {
+            const rightCount = [...field.children].filter(node => node.dataset.side === 'right').length;
+            const leftCount = field.childElementCount - rightCount;
+            const side = rightCount === leftCount ? nextSide : rightCount < leftCount ? 'right' : 'left';
+            const line = document.createElement('p');
+            line.className = 'lyric';
+            line.style.setProperty('--life', `${random(8000, 10500)}ms`);
+            nextPhrase().split(' ').forEach((word, index) => {
+              const span = document.createElement('span');
+              span.textContent = word;
+              span.style.setProperty('--word', index);
+              line.append(span, document.createTextNode(' '));
+            });
+            field.append(line);
+            if (!placeLine(line, side) && !placeLine(line, side === 'right' ? 'left' : 'right')) line.remove();
+            else {
+              nextSide = line.dataset.side === 'right' ? 'left' : 'right';
+              line.addEventListener('animationend', event => {
+                if (event.target === line) line.remove();
+              });
+            }
+          }
+          timer = setTimeout(tick, random(800, 1350));
+        }
+
+        function reset() {
+          clearTimeout(timer);
+          field.replaceChildren();
+          nextSide = 'right';
+          if (!document.hidden && !reducedMotion.matches) {
+            backgroundVideo.play().catch(() => {});
+            timer = setTimeout(tick, 300);
+          } else backgroundVideo.pause();
+        }
+        document.addEventListener('visibilitychange', reset);
+        reducedMotion.addEventListener('change', reset);
+        window.addEventListener('resize', reset);
+        window.addEventListener('pageshow', reset);
+        window.addEventListener('pagehide', () => { clearTimeout(timer); field.replaceChildren(); backgroundVideo.pause(); });
+        document.fonts.ready.then(reset);
+      })();
+    </script>
+  </body>
+</html>
