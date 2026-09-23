@@ -1,0 +1,35 @@
+{
+  "concept": "Soft Hours: a pianist plays in an open meadow at golden hour; a slow, quiet single screen with drifting phrases.",
+  "site": {
+    "brand_name": "Soft Hours",
+    "wordmark": "soft hours",
+    "title": "Soft Hours — A little more room",
+    "description": "Unclench your shoulders. Leave the day at the door. A few quiet minutes, just for you",
+    "nav_links": ["Our way", "Practice", "Retreats", "Field notes"],
+    "contact_label": "Say hello",
+    "headline_sans": "A little less noise",
+    "headline_serif": "A little more room",
+    "subheading": "Unclench your shoulders. Leave the day at the door. A few quiet minutes, just for you",
+    "cta": "Find a softer pace",
+    "footer": "Take your time. The world can wait",
+    "phrases": [
+      "leave a little day behind", "the light takes its time", "somewhere, the grass is listening",
+      "nothing here needs an answer", "let the evening find you", "stay until the sky goes quiet",
+      "a little less to carry", "your thoughts can take the long way", "the rest can wait",
+      "no hurry to become anything", "bare feet, open windows", "a sky with no plans",
+      "this is enough for now", "follow the quieter thought", "let the last note linger",
+      "all this room to feel", "the afternoon comes undone", "we could stay a little longer",
+      "wind through an open door", "the day loosens its grip", "some things arrive softly",
+      "a song with nowhere to be", "leave the clock indoors", "and let the world hum on"
+    ]
+  },
+  "palette": { "background": "#3d4a49", "ink": "#f4f1ea", "shade": "#141e20" },
+  "logo": {
+    "idea": "A half sun resting on two horizon lines.",
+    "shapes": [
+      { "d": "M4 15a12 12 0 0 1 24 0Z", "style": "fill" },
+      { "d": "M5 21h22M9 27h14", "style": "stroke" }
+    ]
+  },
+  "loop": { "method": "pingpong", "why": "Slow, directionless motion reads the same forwards and backwards." }
+}

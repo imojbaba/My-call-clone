@@ -1,0 +1,80 @@
+name: Site studio
+
+# Run the studio pipeline from GitHub (works from the GitHub mobile site):
+# Actions -> Site studio -> Run workflow. Needs repository secrets
+# ANTHROPIC_API_KEY and FAL_KEY (Settings -> Secrets and variables -> Actions).
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: Project folder under studio/projects (must contain brief.md)
+        required: true
+      step:
+        description: What to run
+        type: choice
+        options: [plan, generate, all]
+        default: plan
+      revise:
+        description: Optional feedback for the plan step, e.g. "warmer light, no people"
+        required: false
+      spend:
+        description: Allow paid image and video generation on fal.ai
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: studio-${{ inputs.project }}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: studio
+    env:
+      PROJECT: ${{ inputs.project }}
+      STEP: ${{ inputs.step }}
+      REVISE: ${{ inputs.revise }}
+      SPEND: ${{ inputs.spend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+      - run: npm ci
+      - name: Run ${{ inputs.step }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+        run: |
+          set -euo pipefail
+          yes_flag=""
+          if [ "$SPEND" = "true" ]; then yes_flag="--yes"; fi
+          case "$STEP" in
+            plan)
+              if [ -n "$REVISE" ]; then node scripts/plan.mjs "$PROJECT" --revise "$REVISE"; else node scripts/plan.mjs "$PROJECT"; fi
+              node scripts/review.mjs "$PROJECT" ;;
+            generate)
+              node scripts/generate.mjs "$PROJECT" $yes_flag
+              node scripts/review.mjs "$PROJECT" ;;
+            all)
+              node scripts/all.mjs "$PROJECT" $yes_flag ;;
+          esac
+      - name: Commit results
+        if: always()
+        run: |
+          cd "projects/$PROJECT" 2>/dev/null || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          # Media is ignored for local runs; keep the generated stills, film and site from CI runs.
+          for dir in assets site; do [ -d "$dir" ] && git add -f "$dir"; done
+          if git diff --cached --quiet; then echo "Nothing to commit"; exit 0; fi
+          git commit -m "studio: $STEP $PROJECT"
+          git push

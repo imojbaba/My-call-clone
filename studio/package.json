@@ -1,0 +1,30 @@
+{
+  "name": "site-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Brief -> plan -> assets -> finished one-screen hero site, driven by Claude and fal.ai",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "new": "node scripts/new.mjs",
+    "plan": "node scripts/plan.mjs",
+    "generate": "node scripts/generate.mjs",
+    "finish": "node scripts/finish.mjs",
+    "build": "node scripts/build.mjs",
+    "review": "node scripts/review.mjs",
+    "all": "node scripts/all.mjs",
+    "check": "node scripts/check.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@fal-ai/client": "^1.10.1",
+    "ffmpeg-static": "^5.3.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "vite": "^6.4.2"
+  }
+}

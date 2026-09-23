@@ -1,0 +1,81 @@
+{
+  "_readme": "Tool catalogue for generate.mjs. Each tool is one fal.ai endpoint. Input values written as \"{name}\" are filled per asset: prompt, negative_prompt, image_0 (start frame), image_1 (end frame), aspect_ratio, size (from the tool's aspect map), duration (nearest allowed value). A placeholder with no value drops its key. Endpoint ids and fields were checked against fal.ai model pages on 2026-09-23; confirm on fal.ai before a large run, since hosts rename endpoints.",
+  "defaults": {
+    "keyframe": "nano-banana-pro",
+    "end_frame": "nano-banana-pro-edit",
+    "hero_video": "kling-3-pro",
+    "extra_image": "nano-banana-pro"
+  },
+  "tools": {
+    "nano-banana-pro": {
+      "kind": "image",
+      "label": "Google Nano Banana Pro (native 4K stills)",
+      "endpoint": "fal-ai/nano-banana-pro",
+      "input": { "prompt": "{prompt}", "aspect_ratio": "{aspect_ratio}", "resolution": "4K", "num_images": 1, "output_format": "jpeg" },
+      "output": "images.0.url",
+      "price": { "usd": 0.30, "per": "image" }
+    },
+    "nano-banana-pro-edit": {
+      "kind": "image_edit",
+      "label": "Nano Banana Pro edit (end frame from the keyframe)",
+      "endpoint": "fal-ai/nano-banana-pro/edit",
+      "input": { "prompt": "{prompt}", "image_urls": ["{image_0}"], "aspect_ratio": "{aspect_ratio}", "resolution": "4K", "num_images": 1, "output_format": "jpeg" },
+      "output": "images.0.url",
+      "price": { "usd": 0.30, "per": "image" }
+    },
+    "flux-2-max": {
+      "kind": "image",
+      "label": "FLUX.2 [max]",
+      "endpoint": "fal-ai/flux-2-max",
+      "input": { "prompt": "{prompt}", "image_size": "{size}", "output_format": "jpeg" },
+      "aspect": { "16:9": { "width": 2560, "height": 1440 }, "9:16": { "width": 1440, "height": 2560 }, "1:1": { "width": 2048, "height": 2048 } },
+      "output": "images.0.url",
+      "price": { "usd": 0.18, "per": "image" }
+    },
+    "gpt-image-2": {
+      "kind": "image",
+      "label": "OpenAI GPT Image 2",
+      "endpoint": "openai/gpt-image-2",
+      "input": { "prompt": "{prompt}", "image_size": "{size}", "quality": "high", "num_images": 1, "output_format": "jpeg" },
+      "aspect": { "16:9": { "width": 2048, "height": 1152 }, "9:16": { "width": 1152, "height": 2048 }, "1:1": { "width": 1536, "height": 1536 } },
+      "output": "images.0.url",
+      "price": { "usd": 0.25, "per": "image" }
+    },
+    "kling-3-pro": {
+      "kind": "video",
+      "label": "Kling 3.0 Pro image-to-video (start + end frame)",
+      "endpoint": "fal-ai/kling-video/v3/pro/image-to-video",
+      "input": { "prompt": "{prompt}", "start_image_url": "{image_0}", "end_image_url": "{image_1}", "duration": "{duration}", "negative_prompt": "{negative_prompt}", "generate_audio": false },
+      "durations": ["5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"],
+      "output": "video.url",
+      "price": { "usd": 0.112, "per": "second" }
+    },
+    "veo-3.1-flf": {
+      "kind": "video",
+      "label": "Google Veo 3.1 first + last frame",
+      "endpoint": "fal-ai/veo3.1/first-last-frame-to-video",
+      "input": { "prompt": "{prompt}", "first_frame_url": "{image_0}", "last_frame_url": "{image_1}", "aspect_ratio": "{aspect_ratio}", "duration": "{duration}", "resolution": "1080p", "negative_prompt": "{negative_prompt}", "generate_audio": false },
+      "durations": ["4s", "6s", "8s"],
+      "output": "video.url",
+      "price": { "usd": 0.20, "per": "second" }
+    },
+    "veo-3.1-i2v": {
+      "kind": "video",
+      "label": "Google Veo 3.1 image-to-video (start frame only)",
+      "endpoint": "fal-ai/veo3.1/image-to-video",
+      "input": { "prompt": "{prompt}", "image_url": "{image_0}", "aspect_ratio": "{aspect_ratio}", "duration": "{duration}", "resolution": "1080p", "negative_prompt": "{negative_prompt}", "generate_audio": false },
+      "durations": ["4s", "6s", "8s"],
+      "output": "video.url",
+      "price": { "usd": 0.20, "per": "second" }
+    },
+    "minimax-h3": {
+      "kind": "video",
+      "label": "MiniMax H3 image-to-video (native 1440p)",
+      "endpoint": "minimax/h3/image-to-video",
+      "input": { "prompt": "{prompt}", "image_url": "{image_0}", "end_image_url": "{image_1}", "duration": "{duration}", "resolution": "2K" },
+      "durations": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+      "output": "video.url",
+      "price": { "usd": 0.13, "per": "second" }
+    }
+  }
+}
